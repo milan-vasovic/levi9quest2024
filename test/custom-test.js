@@ -158,7 +158,6 @@ describe('POST /players/create Populate with more players', () => {
 });
 
 describe('POST /teams Validation Tests', () => {
-
     it('should fail when teamName is missing', async () => {
         const res = await chai.request(app)
             .post('/teams')
@@ -331,5 +330,186 @@ describe('POST /teams Validation Tests', () => {
 
         expect(res1).to.have.status(409); 
         expect(res1.body).to.have.property('error', 'Team Name already exists!');
+    });
+});
+
+describe('POST /matches Validation Tests', () => {
+    it('should fail when team1Id is missing', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team1Id is required');
+    });
+
+    it('should fail when team1Id is empty', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: "",
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team1Id cannot be empty');
+    });
+
+    it("should fail when team1Id isn't string", async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: 2546373,
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team1Id must be a string');
+    });
+
+    it('should fail when team2Id is missing', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team2Id is required');
+    });
+
+    it('should fail when team2Id is empty', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: "",
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team2Id cannot be empty');
+    });
+
+    it("should fail when team2Id isn't string", async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: 365474875,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'team2Id must be a string');
+    });
+
+    it('should fail when winningTeamId is missing', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'winningTeamId is required');
+    });
+
+    it('should fail when winningTeamId is empty', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: "",
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'winningTeamId cannot be empty');
+    });
+
+    it("should fail when winningTeamId isn't string", async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: 53426376,
+                duration: 60
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'winningTeamId must be a string');
+    });
+
+
+    it('should fail when duration is missing', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'duration is required');
+    });
+
+    it('should fail when duration is lesser then 1', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: -4
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'duration must be a number greater than 0');
+    });
+
+    it("should fail when duration isn't number", async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: "fsagag"
+            });
+
+        expect(res).to.have.status(400);
+        expect(res.body).to.have.property('error', 'duration must be a number greater than 0');
+    });
+
+    it('should pass when all validations are correct', async () => {
+        const res = await chai.request(app)
+            .post('/matches')
+            .send({
+                team1Id: allTeams[0].id,
+                team2Id: allTeams[1].id,
+                winningTeamId: allTeams[0].id,
+                duration: 60
+            });
+
+        expect(res).to.have.status(200);
+        allMatches.push(res.body);
     });
 });
