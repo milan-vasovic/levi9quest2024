@@ -4,8 +4,6 @@ const teamHelper = require("../helpers/team-helper");
 const playerHelper = require("../helpers/player-helper");
 const CustomError = require('../helpers/error-helper');
 
-const teams = [];
-
 exports.getTeams = (req, res, next) => {
     try {
         const teams = teamHelper.getTeams();
@@ -51,5 +49,3 @@ exports.postNewTeam = (req, res, next) => {
         return res.status(statusCode).json({ error: error.message });
     }
 };
-
-exports.teams = teams;

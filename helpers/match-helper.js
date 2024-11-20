@@ -78,3 +78,5 @@ function determineK(hoursPlayed) {
     if (hoursPlayed < 5000) return 20;
     return 10;
 }
+
+exports.matches = matches;
