@@ -16,7 +16,9 @@ exports.getTeamById = (teamId) => {
         throw new CustomError("Team not found!", 404);
     }
 
-    return team;
+    const populateTeam = populateTeamWithPlayers(team);
+
+    return populateTeam;
 }
 
 
@@ -46,6 +48,23 @@ exports.postNewTeam = (body) => {
     teams.push(newTeam);
 
     return newTeam;
+}
+
+function populateTeamWithPlayers (team) {
+    const populatePlayers = [];
+    
+    team.players.forEach(player => {
+        const newPlayer = playerHelper.getPlayerById(player);
+        populatePlayers.push(newPlayer);
+    })
+
+    const populateTeam = {
+        id: team.id,
+        teamName: team.teamName,
+        players: populatePlayers
+    }
+
+    return populateTeam
 }
 
 exports.teams = teams;
