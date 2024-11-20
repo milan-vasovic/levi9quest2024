@@ -1,0 +1,27 @@
+{
+  "name": "levi9zadatak",
+  "version": "1.0.0",
+  "description": "Zadatak za takmičenje 9 dana u oblacima",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "start-dev": "nodemon app.js",
+    "test": "mocha"
+  },
+  "author": "Milan Vasovic",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-validator": "^7.2.0",
+    "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.0.2"
+  }
+}
